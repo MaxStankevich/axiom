@@ -28,9 +28,10 @@ const Order = db.order;
 const Product = db.product;
 
 // { force: true }
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
-  initial();
+  console.log("DB_HOST", process.env.DB_HOST);
+  // initial();
 });
 
 // simple route
