@@ -31,6 +31,7 @@ const Product = db.product;
 db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   console.log("DB_HOST", process.env.DB_HOST);
+  console.log("PORT", process.env.PORT);
   // initial();
 });
 
@@ -48,7 +49,7 @@ require('./app/routes/customer.routes')(app);
 require('./app/routes/orderStatus.routes')(app);
 require('./app/routes/product.routes')(app);
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 80
 
 app
   .use(express.static(path.join(__dirname, 'client', 'build')))
