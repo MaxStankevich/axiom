@@ -28,9 +28,9 @@ const Order = db.order;
 const Product = db.product;
 
 // { force: true }
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and Resync Db');
-  // initial();
+  initial();
 });
 
 // simple route
@@ -93,19 +93,6 @@ function initial() {
           console.log({ message: "User was registered successfully!" });
         });
       });
-    })
-    .catch(err => {
-      console.log({ message: err.message });
-    });
-
-  User.create({
-    username: "manager",
-    email: "manager@manager.manager",
-    password: bcrypt.hashSync("manager", 8),
-    roleId: 2
-  })
-    .then(() => {
-      console.log({ message: "User was registered successfully!" });
     })
     .catch(err => {
       console.log({ message: err.message });
@@ -179,56 +166,5 @@ function initial() {
   })
     .catch((err) => {
       console.log(">> Error while creating OrderStatus: ", err);
-    });
-
-  Customer.create({
-    email: "customer@cus.cus",
-    organizationName: "OOO Horns and hooves",
-    address: "г. Минск, ул. Пушкина, д. Колотушкина",
-    bankAccountNumber: 123456789,
-    bankName: "Альфа-банк",
-    payerAccountNumber: 123456789,
-    deleted: false
-  }).then((role) => {
-    console.log(">> Created Сustomer: " + JSON.stringify(role, null, 4));
-  })
-    .catch((err) => {
-      console.log(">> Error while creating Сustomer: ", err);
-    });
-
-  Order.create({
-    deliveryMethodId: 1,
-    contactNumber: "123456789",
-    contactName: "Вася",
-    notes: "test",
-    customerId: 1,
-    userId: 1,
-    orderStatusId: 1,
-    deleted: false
-  }).then((role) => {
-    console.log(">> Created Order: " + JSON.stringify(role, null, 4));
-  })
-    .catch((err) => {
-      console.log(">> Error while creating Order: ", err);
-    });
-
-  Product.create({
-    name: "Комплект для контактного чтения ACR39U-U1",
-    description: "работает с пластиковыми ID-картами"
-  }).then((role) => {
-    console.log(">> Created Product: " + JSON.stringify(role, null, 4));
-  })
-    .catch((err) => {
-      console.log(">> Error while creating Product: ", err);
-    });
-
-  Product.create({
-    name: "Комплект для бесконтактного чтения ACR122U-A9",
-    description: "работает с пластиковыми ID-картами и бумажными RFID-паспортами"
-  }).then((role) => {
-    console.log(">> Created Product: " + JSON.stringify(role, null, 4));
-  })
-    .catch((err) => {
-      console.log(">> Error while creating Product: ", err);
     });
 }
