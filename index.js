@@ -2,7 +2,6 @@ const express = require('express')
 const path = require('path')
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const bcrypt = require("bcryptjs");
 
 const app = express();
 
@@ -20,12 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 const Role = db.role;
-const User = db.user;
 const DeliveryMethod = db.deliveryMethod;
 const OrderStatus = db.orderStatus;
-const Customer = db.customer;
-const Order = db.order;
-const Product = db.product;
 
 // { force: true }
 db.sequelize.sync().then(() => {
@@ -49,7 +44,7 @@ require('./app/routes/customer.routes')(app);
 require('./app/routes/orderStatus.routes')(app);
 require('./app/routes/product.routes')(app);
 
-const PORT = process.env.PORT || 80
+const PORT = process.env.PORT || 5000
 
 app
   .use(express.static(path.join(__dirname, 'client', 'build')))
@@ -78,26 +73,6 @@ function initial() {
   })
     .catch((err) => {
       console.log(">> Error while creating role: ", err);
-    });
-
-  User.create({
-    username: "admin",
-    email: "admin@admin.admin",
-    password: bcrypt.hashSync("admin", 8)
-  })
-    .then(user => {
-      Role.findOne({
-        where: {
-          name: "admin"
-        }
-      }).then(role => {
-        user.setRole(role).then(() => {
-          console.log({ message: "User was registered successfully!" });
-        });
-      });
-    })
-    .catch(err => {
-      console.log({ message: err.message });
     });
 
   DeliveryMethod.create({

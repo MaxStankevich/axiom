@@ -75,7 +75,7 @@ const OrderFields = ({ form }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Введите адрес',
+                    message: 'Введите фамилию',
                     whitespace: true,
                   },
                 ]}
