@@ -7,7 +7,7 @@ import Login from "./pages/login/Login";
 import { selectUser, setUser } from "./config/authSlice";
 import moment from "moment";
 import 'moment/locale/ru';
-import OrderForm from "./pages/order-form/OrderForm";
+// import OrderForm from "./pages/order-form/OrderForm";
 
 moment.locale('ru');
 
@@ -31,9 +31,9 @@ const App = () => {
       <Route exact path="/">
         <Login/>
       </Route>
-      <Route exact path="/order_form">
+      {/* <Route exact path="/order_form">
         <OrderForm/>
-      </Route>
+      </Route> */}
     </Switch>;
 }
 
