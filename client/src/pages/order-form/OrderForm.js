@@ -80,7 +80,7 @@ const OrderForm = () => {
         style={{ maxWidth: 750, margin: "0 auto", paddingBottom: 30 }}
       >
         <Products form={form}/>
-        <OrderFields form={form}/>
+        <OrderFields form={form} validatePhone />
         <CustomerFields/>
         <Form.Item
           name="notes"

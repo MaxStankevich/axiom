@@ -5,7 +5,7 @@ import {
   Select,
 } from 'antd';
 
-const OrderFields = ({ form }) => {
+const OrderFields = ({ form, validatePhone }) => {
   return (
     <>
       <Form.Item
@@ -42,7 +42,7 @@ const OrderFields = ({ form }) => {
           {
             required: true,
             message: 'Номер должен состоять из 9 цифр',
-            // len: 9
+            ...(validatePhone ? { len: 9 } : {})
           },
         ]}
       >

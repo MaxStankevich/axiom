@@ -3,11 +3,12 @@ import { Button, notification, Pagination, Select } from 'antd';
 import { Link } from "react-router-dom";
 import OrdersList from "./list/List";
 import request from "../../../../utils/request";
+import { getOrdersParams, setOrdersParams } from "../../../../utils/order";
 
 const Orders = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrder] = useState([]);
-  const [params, setParams] = useState({ page: 1, size: 10, filter: {}, order: '[["createdAt", "DESC"]]' });
+  const [params, setParams] = useState(getOrdersParams());
 
   const [statuses, setStatuses] = useState([]);
   const [statusesLoading, setStatusesLoading] = useState(false);
@@ -15,10 +16,12 @@ const Orders = () => {
   const [usersLoading, setUsersLoading] = useState(false);
 
   const updateParams = (data) => {
+    setOrdersParams({ ...params, ...data });
     setParams(prevParams => ({ ...prevParams, ...data }));
   }
 
   const updateFilter = (data) => {
+    setOrdersParams({ ...params, page: 1, size: 10, filter: { ...params.filter, ...data } });
     setParams(prevParams => ({ ...prevParams, page: 1, size: 10, filter: { ...prevParams.filter, ...data } }));
   }
 
@@ -69,6 +72,7 @@ const Orders = () => {
           style={{ width: 300 }}
           allowClear
           loading={usersLoading}
+          value={params.order}
           onChange={value => updateParams({ order: value })}
           defaultValue={'[["createdAt", "DESC"]]'}
         >
@@ -80,6 +84,7 @@ const Orders = () => {
           style={{ width: 300 }}
           allowClear
           loading={statusesLoading}
+          value={params.filter.orderStatusId}
           onChange={value => updateFilter({ orderStatusId: value })}
         >
           {statuses.map(status => (
@@ -90,6 +95,7 @@ const Orders = () => {
           placeholder="Ответственный"
           style={{ width: 300 }}
           allowClear
+          value={params.filter.userId}
           loading={usersLoading}
           onChange={value => updateFilter({ userId: value })}
         >
@@ -103,6 +109,7 @@ const Orders = () => {
       <div className="pagination">
         <Pagination
           total={orders.totalItems}
+          current={params.page}
           defaultPageSize={params.size}
           onChange={page => {
             updateParams({ page });
