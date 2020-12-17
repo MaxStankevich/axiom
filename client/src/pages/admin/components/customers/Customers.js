@@ -77,13 +77,14 @@ const Customers = () => {
         <Input
           style={{ width: 300 }}
           onChange={search}
-          placeholder="Поиск по Email"
+          placeholder="Поиск"
         />
       </div>
       <Table columns={columns} dataSource={customers.data} rowKey="id" loading={loading} pagination={false}/>
       <div className="pagination">
         <Pagination
           total={customers.totalItems}
+          current={params.page}
           defaultPageSize={params.size}
           onChange={page => {
             updateParams({ page });

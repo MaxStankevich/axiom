@@ -13,7 +13,12 @@ exports.customers = (req, res) => {
     offset,
     where: {
       deleted: { [Op.not]: true },
-      ...(search ? { email: { [Op.like]: `%${search}%` } } : {})
+      ...(search ? {
+        [Op.or]: [
+          { email: { [Op.like]: `%${search}%` } },
+          { organizationName: { [Op.like]: `%${search}%` } }
+        ]
+      } : {}),
     },
     include: ["orders"],
   }).then(customers => {
