@@ -52,12 +52,13 @@ const CustomerFields = () => {
       </Form.Item>
       <Form.Item
         name={["customer", "bankAccountNumber"]}
-        label="Номер банковского счёта"
+        label="Номер банковского счёта (IBAN)"
         rules={[
           {
             required: true,
-            message: 'Ведите номер банковского счёта',
+            message: 'Должно быть 28 символов',
             whitespace: true,
+            len: 28
           },
         ]}
       >
