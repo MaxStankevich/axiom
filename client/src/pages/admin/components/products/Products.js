@@ -57,7 +57,7 @@ const Products = () => {
           <Button className="green-button" type="primary">Добавить</Button>
         </Link>
       </div>
-      <Table columns={columns} dataSource={products} rowKey="id" loading={loading}/>
+      <Table columns={columns} dataSource={products} rowKey="id" loading={loading} pagination={false} />
     </>
   )
 };

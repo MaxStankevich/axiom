@@ -1,12 +1,28 @@
 import React, { Fragment } from 'react';
-import { Table, Space, Button } from 'antd';
-import { Link } from "react-router-dom";
+import { Table, Space, Button, notification } from 'antd';
+import { Link, useHistory } from "react-router-dom";
 import moment from "moment";
 import StatusTag from "../../../../../components/status-tag/StatusTag";
 import DeleteAction from "../../../../../components/delete-action/DeleteAction";
+import request from "../../../../../utils/request";
+import useAuth from "../../../../../hooks/useAuth";
 
 
 const OrdersList = ({ orders, loading, showCustomer = true, fetchOrders }) => {
+  const [user] = useAuth();
+  const history = useHistory();
+
+  const takeOrder = (id) => {
+    request.put(`/orders/${id}`, { orderStatusId: 2, userId: user.id })
+      .then(() => {
+        notification.success({ message: "Заказ успешно принят вами" })
+        history.push(`/orders/${id}`)
+      })
+      .catch(() => {
+        notification.error({ message: "Не удалось принять заказ" })
+      })
+  }
+
   const columns = [
     {
       title: 'Дата регистрации',
@@ -61,9 +77,21 @@ const OrdersList = ({ orders, loading, showCustomer = true, fetchOrders }) => {
             errorMessage="Не удалось удалить заказ"
           />
           <Link to={`/orders/${record.id}/edit`}><Button
+            type="primary" ghost
             size="small">Редактировать</Button></Link>
           <Link to={`/orders/${record.id}`}><Button
             size="small">Детали</Button></Link>
+          {record.orderStatusId === 1 && !record.userId &&
+          <Button
+            size="small"
+            type="primary"
+            onClick={() => {
+              takeOrder(record.id);
+            }}
+          >
+            Принять
+          </Button>
+          }
         </Space>
       ),
     },

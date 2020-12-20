@@ -6,7 +6,9 @@ const COLORS = {
   2: "geekblue",
   3: "blue",
   4: "cyan",
-  5: "green"
+  5: "lime",
+  6: "purple",
+  7: "green"
 }
 
 const StatusTag = ({ id, name }) => (

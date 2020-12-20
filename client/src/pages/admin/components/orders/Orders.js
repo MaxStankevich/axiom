@@ -40,6 +40,16 @@ const Orders = () => {
   }, [fetchOrders])
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [fetchOrders])
+
+  useEffect(() => {
     setStatusesLoading(true);
     request.get("/order_statuses").then(res => {
       setStatuses(res.data);
@@ -103,7 +113,12 @@ const Orders = () => {
             <Select.Option key={user.id} value={user.id}>{user.fullName}, {user.username}</Select.Option>
           ))}
           <Select.Option value={null}>Никто</Select.Option>
-        </Select>
+        </Select>{" "}
+        <Button
+          onClick={() => {
+            updateParams({ page: 1, size: 10, filter: {}, order: '[["createdAt", "DESC"]]' });
+          }}
+        >Сбросить фильтры</Button>
       </div>
       <OrdersList orders={orders.data} loading={loading} fetchOrders={fetchOrders}/>
       <div className="pagination">

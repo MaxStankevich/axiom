@@ -58,6 +58,12 @@ const OrderForm = ({ order = {}, onSuccess }) => {
   }
 
   useEffect(() => {
+    if (isEdit) {
+      form.resetFields()
+    }
+  }, [form, isEdit, order])
+
+  useEffect(() => {
     fetchCustomers();
 
     setStatusesLoading(true);
@@ -245,7 +251,7 @@ const OrderForm = ({ order = {}, onSuccess }) => {
                   showSearch
                   loading={customersLoading}
                   notFoundContent={customersLoading ? <Spin size="small"/> : null}
-                  placeholder="Поиск по Email"
+                  placeholder="Поиск"
                   onSearch={debounce(500, fetchCustomers)}
                   filterOption={false}
                 >

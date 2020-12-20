@@ -5,6 +5,8 @@ const Order = db.order;
 const Customer = db.customer;
 const Product = db.product;
 const OrderProduct = db.orderProduct;
+const OrderStatus = db.orderStatus;
+const OrderStatusHistory = db.orderStatusHistory;
 
 exports.orders = (req, res) => {
   const { page, size, filter, order } = req.query;
@@ -26,7 +28,7 @@ exports.orders = (req, res) => {
 
 exports.order = (req, res) => {
   Order.findByPk(req.params.id, {
-    include: ["orderStatus", "deliveryMethod", "customer", "user", "products"],
+    include: ["orderStatus", "deliveryMethod", "customer", "user", "products", "orderStatusHistories"],
   }).then(order => {
     res.status(200).send(order);
   })
@@ -41,7 +43,9 @@ exports.updateOrder = async (req, res) => {
     let order = await Order.findByPk(req.params.id, {
       include: "products",
     });
+    let oldStatusId;
     if (order) {
+      oldStatusId = order.orderStatusId;
       await order.update(body);
       if (order && products && products.length) {
         for (let i = 0; i < products.length; i++) {
@@ -55,9 +59,14 @@ exports.updateOrder = async (req, res) => {
           } else if (existingProduct) {
             await existingProduct.update({ quantity })
           } else {
-            console.log(product);
             await order.addProduct(product, { through: { quantity } })
           }
+        }
+      }
+      if (oldStatusId !== body.orderStatusId) {
+        const status = await OrderStatus.findByPk(body.orderStatusId);
+        if (status && status.name) {
+          OrderStatusHistory.create({ orderId: order.id, statusName: status.name })
         }
       }
       res.status(200).send(order);
@@ -93,6 +102,12 @@ exports.createOrder = async (req, res) => {
           const product = await Product.findByPk(id);
           if (product) {
             await order.addProduct(product, { through: { quantity } })
+          }
+        }
+        if (order.orderStatusId) {
+          const status = await OrderStatus.findByPk(body.orderStatusId);
+          if (status && status.name) {
+            OrderStatusHistory.create({ orderId: order.id, statusName: status.name })
           }
         }
         res.status(201).send(order);

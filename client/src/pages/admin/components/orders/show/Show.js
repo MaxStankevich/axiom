@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Descriptions, Button } from "antd";
+import { Descriptions, Button, notification } from "antd";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 import request from "../../../../../utils/request";
@@ -10,13 +10,36 @@ const ShowOrder = () => {
   const [order, setOrder] = useState();
   const { id } = useParams();
 
-  useEffect(() => {
+  const fetchOrder = () => {
     request.get(`/orders/${id}`).then(res => {
-      setOrder(res.data);
+      if (order && JSON.stringify(order) !== JSON.stringify(res.data)) {
+        notification.warning({
+          message: "Внимание! Этот заказ был изменён другим пользователем. Проверьте актуальность данных.",
+          duration: 0
+        })
+        setOrder(res.data);
+      }
+      if (!order) {
+        setOrder(res.data);
+      }
     }).catch(err => {
       console.log(err);
     })
+  }
+
+  useEffect(() => {
+    fetchOrder();
   }, [id])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchOrder();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [id, order])
 
   return (
     order ?
@@ -69,6 +92,14 @@ const ShowOrder = () => {
             <br/>
             УНП: {order.customer.payerAccountNumber}
           </Link>
+        </Descriptions.Item>
+        <Descriptions.Item label="История">
+          {order.orderStatusHistories.map(history => (
+            <Fragment key={history.id}>
+              <b>{history.statusName}:</b> {moment(history.createdAt).format('D MMMM YYYY, HH:mm')}
+              <br/>
+            </Fragment>
+          ))}
         </Descriptions.Item>
       </Descriptions> : <Spinner size="large"/>
   )

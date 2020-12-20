@@ -2,7 +2,9 @@ import React from 'react';
 import {
   Form,
   Input,
+  Tooltip,
 } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const CustomerFields = () => {
   return (
@@ -52,7 +54,17 @@ const CustomerFields = () => {
       </Form.Item>
       <Form.Item
         name={["customer", "bankAccountNumber"]}
-        label="Номер банковского счёта (IBAN)"
+        label={
+          <span>
+            Номер банковского счёта (IBAN)&nbsp;
+            <Tooltip title="Должен состоять только из 28 заглавных букв латинского алфавита и цифр">
+              <QuestionCircleOutlined/>
+            </Tooltip>
+          </span>
+        }
+        normalize={(val) => {
+          return val.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+        }}
         rules={[
           {
             required: true,
