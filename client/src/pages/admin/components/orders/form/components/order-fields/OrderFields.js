@@ -11,6 +11,12 @@ const OrderFields = ({ form, validatePhone }) => {
       <Form.Item
         name="deliveryMethodId"
         label="Способ доставки"
+        rules={[
+          {
+            required: true,
+            message: 'Укажите способ доставки',
+          },
+        ]}
       >
         <Select>
           <Select.Option value={1}>Самовывоз</Select.Option>
