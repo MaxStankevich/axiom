@@ -16,7 +16,8 @@ exports.customers = (req, res) => {
       ...(search ? {
         [Op.or]: [
           { email: { [Op.like]: `%${search}%` } },
-          { organizationName: { [Op.like]: `%${search}%` } }
+          { organizationName: { [Op.like]: `%${search}%` } },
+          { payerAccountNumber: { [Op.like]: `%${search}%` } }
         ]
       } : {}),
     },
