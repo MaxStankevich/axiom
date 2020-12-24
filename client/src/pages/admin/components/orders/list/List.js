@@ -31,6 +31,10 @@ const OrdersList = ({ orders, loading, showCustomer = true, fetchOrders }) => {
         moment(createdAt).format('D MMMM YYYY, HH:mm')
       ),
     },
+    {
+      title: 'Счёт-фактура',
+      dataIndex: 'invoice',
+    },
     ...(showCustomer ? [{
       title: 'Заказчик',
       dataIndex: "customer",

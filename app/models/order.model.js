@@ -18,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
     notes: {
       type: Sequelize.STRING
     },
+    invoice: {
+      type: Sequelize.STRING
+    },
     deleted: {
       type: Sequelize.BOOLEAN
     }

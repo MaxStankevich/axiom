@@ -80,6 +80,9 @@ const ShowOrder = () => {
             "Не назначен"
           }
         </Descriptions.Item>
+        <Descriptions.Item label="Счёт-фактура">
+          {order.invoice}
+        </Descriptions.Item>
         <Descriptions.Item label="Заказчик">
           <Link to={`/customers/${order.customer.id}`}>
             {order.customer.organizationName}

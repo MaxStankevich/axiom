@@ -123,6 +123,7 @@ const Orders = () => {
       <OrdersList orders={orders.data} loading={loading} fetchOrders={fetchOrders}/>
       <div className="pagination">
         <Pagination
+          showSizeChanger={false}
           total={orders.totalItems}
           current={params.page}
           defaultPageSize={params.size}

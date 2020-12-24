@@ -157,6 +157,7 @@ const OrderForm = ({ order = {}, onSuccess }) => {
           notes: order.notes,
           orderStatusId: order.orderStatusId,
           userId: order.userId,
+          invoice: order.invoice,
           products: initialProducts
         } : {
           deliveryMethodId: 1,
@@ -169,6 +170,12 @@ const OrderForm = ({ order = {}, onSuccess }) => {
         <Products form={form}/>
         <div style={{ marginBottom: "50px" }}>
           <OrderFields form={form}/>
+          <Form.Item
+            name="invoice"
+            label="Счёт-фактура"
+          >
+            <Input/>
+          </Form.Item>
           <Form.Item
             name="notes"
             label="Дополнительные условия и пожелания"

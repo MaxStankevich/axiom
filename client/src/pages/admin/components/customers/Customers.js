@@ -83,6 +83,7 @@ const Customers = () => {
       <Table columns={columns} dataSource={customers.data} rowKey="id" loading={loading} pagination={false}/>
       <div className="pagination">
         <Pagination
+          showSizeChanger={false}
           total={customers.totalItems}
           current={params.page}
           defaultPageSize={params.size}
