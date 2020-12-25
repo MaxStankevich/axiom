@@ -1,5 +1,7 @@
 import 'react-app-polyfill/stable'
 import React from 'react';
+import { ConfigProvider } from 'antd';
+import locale from 'antd/lib/locale/ru_RU';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
@@ -10,10 +12,13 @@ import './index.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
-  </Provider>,
+    <ConfigProvider locale={locale}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ConfigProvider>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 

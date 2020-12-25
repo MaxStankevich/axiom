@@ -9,14 +9,22 @@ const OrderStatus = db.orderStatus;
 const OrderStatusHistory = db.orderStatusHistory;
 
 exports.orders = (req, res) => {
-  const { page, size, filter, order } = req.query;
+  const { page, size, filter, order, createdAt } = req.query;
   const { limit, offset } = pagination.getPagination(page, size);
 
   Order.findAndCountAll({
     distinct: true,
     limit,
     offset,
-    where: { deleted: { [Op.not]: true } , ...JSON.parse(filter || "{}")},
+    where: {
+      deleted: { [Op.not]: true },
+      ...JSON.parse(filter || "{}"),
+      ...(createdAt ? {
+        createdAt: {
+          [Op.between]: JSON.parse(createdAt)
+        }
+      } : {})
+    },
     include: ["orderStatus", "deliveryMethod", "customer", "user", "products"],
     order: JSON.parse(order || "[]"),
   }).then(orders => {

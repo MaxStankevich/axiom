@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Layout, Menu } from 'antd';
-import { TeamOutlined, MailOutlined, UserOutlined, IdcardFilled, DatabaseOutlined } from '@ant-design/icons';
+import { TeamOutlined, MailOutlined, UserOutlined, IdcardFilled, DatabaseOutlined, LineChartOutlined } from '@ant-design/icons';
 import {
   Switch,
   Route,
@@ -24,6 +24,7 @@ import CreateCustomer from "./components/customers/create/Create";
 import Products from "./components/products/Products";
 import CreateProduct from "./components/products/create/Create";
 import EditProduct from "./components/products/edit/Edit";
+import Statistics from "./components/statistics/Statistics";
 
 const { Content, Sider } = Layout;
 
@@ -43,6 +44,7 @@ const routes = [
   { path: "/products/new", component: <CreateProduct/> },
   { path: "/products/:id/edit", component: <EditProduct/> },
   { path: "/profile", component: <Profile/> },
+  { path: "/statistics", component: <Statistics/> },
 ]
 
 const Admin = () => {
@@ -61,6 +63,9 @@ const Admin = () => {
     }
     if (location.pathname.match("/profile")) {
       return "profile"
+    }
+    if (location.pathname.match("/statistics")) {
+      return "statistics"
     }
     return "orders";
   }, [location.pathname]);
@@ -90,6 +95,11 @@ const Admin = () => {
           <Menu.Item key="profile" icon={<UserOutlined/>}>
             <Link to="/profile">Профиль</Link>
           </Menu.Item>
+          {isAdmin &&
+          <Menu.Item key="statistics" icon={<LineChartOutlined />}>
+            <Link to="/statistics">Статистика</Link>
+          </Menu.Item>
+          }
         </Menu>
       </Sider>
       <Layout>
@@ -106,7 +116,7 @@ const Admin = () => {
               </Switch>
               :
               <Switch>
-                {routes.filter(route => !route.path.match("/users")).map(route => (
+                {routes.filter(route => (!route.path.match("/users") || !route.path.match("/statistics"))).map(route => (
                   <Route key={route.path} exact path={route.path}>
                     {route.component}
                   </Route>

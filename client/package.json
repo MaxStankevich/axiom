@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/charts": "1.0.13",
     "@ant-design/icons": "4.3.0",
     "@reduxjs/toolkit": "1.4.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "4.9.2",
     "axios": "0.21.0",
+    "lodash-es": "4.17.20",
     "moment": "2.8.1",
     "react": "^17.0.1",
     "react-app-polyfill": "2.0.0",
