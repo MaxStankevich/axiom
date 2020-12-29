@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { DatePicker } from "antd";
-import { Line } from '@ant-design/charts';
+import { DatePicker, Descriptions } from "antd";
+import { Pie } from '@ant-design/charts';
 import { groupBy } from 'lodash-es';
 import moment from 'moment';
 import request from "../../../../utils/request";
@@ -12,36 +12,49 @@ const Statistics = () => {
     page: 1,
     size: 10000,
     createdAt: null,
-    order: '[["createdAt", "ASC"]]'
   });
 
-  const groupedOrders = groupBy(orders.data, (order) => {
-    return moment(order.createdAt).format("MMM D");
-  })
+  const products = groupBy(orders.data.reduce((acc, order) => {
+    return acc.concat(order.products);
+  }, []), "name");
 
-  const data = Object.keys(groupedOrders).map(key => {
-    return {
-      day: key, value: groupedOrders[key].reduce((accum, order) => {
-        return accum + order.products.reduce((acc, item) => {
-          return acc + item.order_product.quantity
-        }, 0)
-      }, 0)
-    }
-  });
+  const data = Object.keys(products).map(key => ({
+    type: key,
+    value: products[key].reduce((acc, item) => {
+      return acc + item.order_product.quantity
+    }, 0),
+  }));
+
+  const totalProducts = data.reduce((acc, item) => {
+    return acc + item.value
+  }, 0)
 
   const config = {
+    appendPadding: 10,
     data,
-    width: 1000,
-    height: 400,
-    autoFit: false,
-    xField: 'day',
-    yField: 'value',
-    point: {
-      size: 5,
-    },
+    angleField: 'value',
+    colorField: 'type',
+    radius: 1,
+    innerRadius: 0.6,
     label: {
+      autoRotate: false,
+      type: 'inner',
+      offset: '-50%',
+      content: '{value}',
       style: {
-        fill: '#aaa',
+        textAlign: 'center',
+        fontSize: 17,
+      },
+    },
+    statistic: {
+      title: false,
+      content: {
+        style: {
+          whiteSpace: 'pre-wrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
+        formatter: () => `Всего ${totalProducts}`,
       },
     },
   };
@@ -67,7 +80,16 @@ const Statistics = () => {
       <DatePicker.RangePicker style={{ marginBottom: "50px", width: 300 }} onChange={(value, str) => {
         updateParams({ createdAt: JSON.stringify(str) })
       }}/>
-      <Line {...config} loading={loading}/>
+      <Descriptions
+        title={params.createdAt ? `За период ${JSON.parse(params.createdAt).map(time => moment(time).format('D MMMM YYYY')).join(" - ")}` : "За всё время"}
+        bordered
+        layout="vertical"
+        style={{ marginBottom: 50 }}
+      >
+        {data.map(item => <Descriptions.Item key={item.type} label={item.type}>{item.value}</Descriptions.Item>)}
+        <Descriptions.Item label="Всего">{totalProducts}</Descriptions.Item>
+      </Descriptions>
+      <Pie {...config} loading={loading}/>
     </>
   )
 }
