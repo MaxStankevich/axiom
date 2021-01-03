@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { DatePicker, Descriptions } from "antd";
 import { Pie } from '@ant-design/charts';
 import { groupBy } from 'lodash-es';
@@ -15,15 +15,24 @@ const Statistics = () => {
   });
 
   const products = groupBy(orders.data.reduce((acc, order) => {
-    return acc.concat(order.products);
+    return acc.concat(order.products.map(prod => ({ ...prod, orderStatusId: order.orderStatusId })));
   }, []), "name");
 
-  const data = Object.keys(products).map(key => ({
-    type: key,
-    value: products[key].reduce((acc, item) => {
-      return acc + item.order_product.quantity
-    }, 0),
-  }));
+  const data = Object.keys(products).map(key => {
+    const value = products[key].reduce((acc, item) => {
+      acc.all += item.order_product.quantity;
+      if (item.orderStatusId === 1) {
+        acc.raw += item.order_product.quantity;
+      }
+      return acc
+    }, { all: 0, raw: 0 });
+
+    return ({
+      type: key,
+      label: `${value.all} (${value.raw} не обработано)`,
+      value: value.all
+    })
+  });
 
   const totalProducts = data.reduce((acc, item) => {
     return acc + item.value
@@ -86,7 +95,7 @@ const Statistics = () => {
         layout="vertical"
         style={{ marginBottom: 50 }}
       >
-        {data.map(item => <Descriptions.Item key={item.type} label={item.type}>{item.value}</Descriptions.Item>)}
+        {data.map(item => <Descriptions.Item key={item.type} label={item.type}>{item.label}</Descriptions.Item>)}
         <Descriptions.Item label="Всего">{totalProducts}</Descriptions.Item>
       </Descriptions>
       <Pie {...config} loading={loading}/>
