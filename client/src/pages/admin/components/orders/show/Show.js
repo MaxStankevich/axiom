@@ -111,9 +111,9 @@ const ShowOrder = () => {
           {order.contractAuthority}
         </Descriptions.Item>
         <Descriptions.Item label="Источник финансирования">
-          {order.financeSource.name === "Иной"
+          {order.financeSource?.name === "Иной"
             ? order.customFinanceSource
-            : order.financeSource.name
+            : order.financeSource?.name
           }
         </Descriptions.Item>
       </Descriptions> : <Spinner size="large"/>
