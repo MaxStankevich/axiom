@@ -8,6 +8,7 @@ import request from "../../utils/request";
 import Products from "../admin/components/orders/form/components/products/Products";
 import OrderFields from "../admin/components/orders/form/components/order-fields/OrderFields";
 import CustomerFields from "../admin/components/orders/form/components/customer-fields/CustomerFields";
+import ContractInfoFields from '../admin/components/orders/form/components/contract-info-fields/ContractInfoFields';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -88,6 +89,7 @@ const OrderForm = () => {
         >
           <Input.TextArea/>
         </Form.Item>
+        <ContractInfoFields form={form}/>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" size="large" loading={loading}>
             Отправить

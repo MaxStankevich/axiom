@@ -4,7 +4,7 @@ import { getUserToken } from "./user";
 
 const request = axios.create({
   // baseURL: "http://localhost:5000/api/",
-  baseURL: "/api/",
+  baseURL: process.env.NODE_ENV === "development" ? "http://localhost:5000/api/" : "/api/",
 });
 
 request.interceptors.request.use(function (config) {

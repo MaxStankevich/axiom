@@ -20,7 +20,7 @@ const OrderFields = ({ form, validatePhone }) => {
       >
         <Select>
           <Select.Option value={1}>Самовывоз</Select.Option>
-          <Select.Option value={2}>Курьер (Autolight Express)</Select.Option>
+          <Select.Option value={2}>Курьер (Autolight Express), бесплатно</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item shouldUpdate noStyle>
@@ -43,7 +43,7 @@ const OrderFields = ({ form, validatePhone }) => {
       </Form.Item>
       <Form.Item
         name="contactNumber"
-        label="Контактный номер"
+        label="Контактный номер (мобильный)"
         rules={[
           {
             required: true,
