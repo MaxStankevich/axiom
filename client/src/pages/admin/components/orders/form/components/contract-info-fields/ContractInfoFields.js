@@ -16,9 +16,7 @@ const ContractInfoFields = ({ form }) => {
   const [financeSources, setFinanceSources] = useState([]);
   const [customSource, SetCustomSource] = useState(
     form.getFieldValue(["contractInfo", "financeSourceId"]) === 5
-      ? true
-      : false
-    );
+  );
 
   useEffect(() => {
     setSourcesLoading(true);
@@ -56,7 +54,7 @@ const ContractInfoFields = ({ form }) => {
       <Select
         disabled={sourcesLoading}
         placeholder="Выберите источник финансирования"
-        onChange={value => value === 5 ? SetCustomSource(true) : SetCustomSource(false)}
+        onChange={value => SetCustomSource(value === 5)}
       >
         {
           financeSources.map(({id, name}) => 
