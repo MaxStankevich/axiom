@@ -131,7 +131,6 @@ const OrderForm = ({ order = {}, onSuccess }) => {
             }
           },
           (e) => {
-            console.log(e);
             notification.error({ message: "Не удалось сохранить данные заказа" });
           }
         ).finally(() => {

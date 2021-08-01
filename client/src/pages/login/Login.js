@@ -22,7 +22,6 @@ const Login = () => {
         }
         updateUser(response.data);
       }).catch((e) => {
-      console.log(e);
       notification.error({ message: "Не удалось выполнить вход" })
     }).finally(() => {
       setLoading(false);
