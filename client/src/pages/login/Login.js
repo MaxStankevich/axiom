@@ -21,7 +21,8 @@ const Login = () => {
           localStorage.setItem("token", response.data.accessToken);
         }
         updateUser(response.data);
-      }).catch(() => {
+      }).catch((e) => {
+      console.log(e);
       notification.error({ message: "Не удалось выполнить вход" })
     }).finally(() => {
       setLoading(false);

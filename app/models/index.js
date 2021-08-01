@@ -33,6 +33,7 @@ db.customer = require("../models/customer.model.js")(sequelize, Sequelize);
 db.product = require("../models/product.model.js")(sequelize, Sequelize);
 db.orderProduct = require("../models/orderProduct.model.js")(sequelize, Sequelize);
 db.orderStatusHistory = require("../models/orderStatusHistory.model.js")(sequelize, Sequelize);
+db.financeSource = require("../models/financeSource.model.js")(sequelize, Sequelize);
 
 db.user.belongsTo(db.role, {
   foreignKey: "roleId",
@@ -54,6 +55,11 @@ db.order.belongsTo(db.user, {
   foreignKey: "userId",
   as: "user",
 });
+db.order.belongsTo(db.financeSource, {
+  foreignKey: "financeSourceId",
+  as: "financeSource",
+});
+
 db.customer.hasMany(db.order);
 db.order.hasMany(db.orderStatusHistory, { as: 'orderStatusHistories' });
 db.order.belongsToMany(db.product, { through: db.orderProduct });

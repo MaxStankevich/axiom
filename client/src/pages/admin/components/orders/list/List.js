@@ -25,6 +25,10 @@ const OrdersList = ({ orders, loading, showCustomer = true, fetchOrders }) => {
 
   const columns = [
     {
+      title: 'Номер заказа',
+      dataIndex: 'id',
+    },
+    {
       title: 'Дата регистрации',
       dataIndex: 'createdAt',
       render: createdAt => (

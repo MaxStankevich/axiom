@@ -21,6 +21,7 @@ const db = require("./app/models");
 const Role = db.role;
 const DeliveryMethod = db.deliveryMethod;
 const OrderStatus = db.orderStatus;
+const FinanceSource = db.financeSource;
 
 // { force: true }
 db.sequelize.sync().then(() => {
@@ -43,6 +44,7 @@ require('./app/routes/order.routes')(app);
 require('./app/routes/customer.routes')(app);
 require('./app/routes/orderStatus.routes')(app);
 require('./app/routes/product.routes')(app);
+require('./app/routes/financeSource.routes')(app);
 
 const PORT = process.env.PORT || 5000
 
@@ -87,7 +89,7 @@ function initial() {
 
   DeliveryMethod.create({
     id: 2,
-    name: "Курьер"
+    name: "Курьер (бесплатно)"
   }).then((role) => {
     console.log(">> Created DeliveryMethod: " + JSON.stringify(role, null, 4));
   })
@@ -143,5 +145,55 @@ function initial() {
   })
     .catch((err) => {
       console.log(">> Error while creating OrderStatus: ", err);
+    });
+
+  FinanceSource.create({
+    id: 1,
+    name: "Республиканский бюджет"
+  }).then((role) => {
+    console.log(`>> Created FinanceSource: ${JSON.stringify(role, null, 4)}`);
+  })
+    .catch((err) => {
+      console.log(`>> Error while creating FinanceSource: `, err);
+    });
+
+  FinanceSource.create({
+    id: 2,
+    name: "Городской бюджет"
+  }).then((role) => {
+    console.log(`>> Created FinanceSource: ${JSON.stringify(role, null, 4)}`);
+  })
+    .catch((err) => {
+      console.log(`>> Error while creating FinanceSource: `, err);
+    });
+
+  FinanceSource.create({
+    id: 3,
+    name: "Районный бюджет"
+  }).then((role) => {
+    console.log(`>> Created FinanceSource: ${JSON.stringify(role, null, 4)}`);
+  })
+    .catch((err) => {
+      console.log(`>> Error while creating FinanceSource: `, err);
+    });
+
+  FinanceSource.create({
+    id: 4,
+    name: "Собственные средства"
+  }).then((role) => {
+    console.log(`>> Created FinanceSource: ${JSON.stringify(role, null, 4)}`);
+  })
+    .catch((err) => {
+      console.log(`>> Error while creating FinanceSource: `, err);
+    });
+
+  FinanceSource.create({
+    id: 5,
+    name: "Иной"
+  }).then((role) => {
+    console.log(`>> Created FinanceSource: ${JSON.stringify(role, null, 4)}`);
+  })
+    .catch((err) => {
+      console.log(`>> Error while creating FinanceSource: `, err);
     });
 }

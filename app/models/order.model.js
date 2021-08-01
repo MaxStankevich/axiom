@@ -15,6 +15,15 @@ module.exports = (sequelize, Sequelize) => {
     contactPatronymic: {
       type: Sequelize.STRING
     },
+    customFinanceSource: {
+      type: Sequelize.STRING
+    },
+    contractPerson: {
+      type: Sequelize.STRING
+    },
+    contractAuthority: {
+      type: Sequelize.STRING
+    },
     notes: {
       type: Sequelize.STRING
     },

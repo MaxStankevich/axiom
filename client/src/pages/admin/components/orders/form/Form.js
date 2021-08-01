@@ -17,6 +17,7 @@ import useAuth from "../../../../../hooks/useAuth";
 import Products from "./components/products/Products";
 import CustomerFields from "./components/customer-fields/CustomerFields";
 import OrderFields from "./components/order-fields/OrderFields";
+import ContractInfoFields from './components/contract-info-fields/ContractInfoFields';
 
 const { Option } = Select;
 
@@ -129,7 +130,8 @@ const OrderForm = ({ order = {}, onSuccess }) => {
               onSuccess(response.data);
             }
           },
-          () => {
+          (e) => {
+            console.log(e);
             notification.error({ message: "Не удалось сохранить данные заказа" });
           }
         ).finally(() => {
@@ -158,7 +160,13 @@ const OrderForm = ({ order = {}, onSuccess }) => {
           orderStatusId: order.orderStatusId,
           userId: order.userId,
           invoice: order.invoice,
-          products: initialProducts
+          products: initialProducts,
+          contractInfo: {
+            financeSourceId: order.financeSourceId,
+            customFinanceSource: order.customFinanceSource,
+            contractPerson: order.contractPerson,
+            contractAuthority: order.contractAuthority,
+          }
         } : {
           deliveryMethodId: 1,
           orderStatusId: 1,
@@ -272,6 +280,7 @@ const OrderForm = ({ order = {}, onSuccess }) => {
             }
           </>
         }
+        <ContractInfoFields form={form}/>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" loading={loading}>
             {isEdit ? "Сохранить" : "Создать"}

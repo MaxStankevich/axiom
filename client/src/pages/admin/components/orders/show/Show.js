@@ -104,6 +104,18 @@ const ShowOrder = () => {
             </Fragment>
           ))}
         </Descriptions.Item>
+        <Descriptions.Item label="Договор заключается в лице">
+          {order.contractPerson}
+        </Descriptions.Item>
+        <Descriptions.Item label="Договор действует на основе">
+          {order.contractAuthority}
+        </Descriptions.Item>
+        <Descriptions.Item label="Источник финансирования">
+          {order.financeSource.name === "Иной"
+            ? order.customFinanceSource
+            : order.financeSource.name
+          }
+        </Descriptions.Item>
       </Descriptions> : <Spinner size="large"/>
   )
 }

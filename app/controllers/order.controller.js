@@ -36,7 +36,7 @@ exports.orders = (req, res) => {
 
 exports.order = (req, res) => {
   Order.findByPk(req.params.id, {
-    include: ["orderStatus", "deliveryMethod", "customer", "user", "products", "orderStatusHistories"],
+    include: ["orderStatus", "deliveryMethod", "customer", "user", "products", "orderStatusHistories", "financeSource"],
   }).then(order => {
     res.status(200).send(order);
   })
@@ -47,14 +47,15 @@ exports.order = (req, res) => {
 
 exports.updateOrder = async (req, res) => {
   try {
-    const { products, ...body } = req.body;
+    const { contractInfo: bodyContractInfo, products, ...body } = req.body;
     let order = await Order.findByPk(req.params.id, {
       include: "products",
     });
     let oldStatusId;
     if (order) {
       oldStatusId = order.orderStatusId;
-      await order.update(body);
+      const updatedData = { ...body, ...bodyContractInfo };
+      await order.update(updatedData);
       if (order && products && products.length) {
         for (let i = 0; i < products.length; i++) {
           const { id, quantity, _destroy } = products[i];
@@ -90,7 +91,7 @@ exports.createOrder = async (req, res) => {
   try {
     let order;
     let customerId = req.body.customerId;
-    const { customer: bodyCustomer, products, ...body } = req.body;
+    const { customer: bodyCustomer, contractInfo: bodyContractInfo, products, ...body } = req.body;
     if (!customerId && bodyCustomer && bodyCustomer.email) {
       let [customer] = await Customer.findOrCreate({
         where: { email: bodyCustomer.email },
@@ -103,7 +104,7 @@ exports.createOrder = async (req, res) => {
       }
     }
     if (customerId) {
-      order = await Order.create({ deleted: false, orderStatusId: 1, customerId, ...body });
+      order = await Order.create({ deleted: false, orderStatusId: 1, customerId, ...bodyContractInfo, ...body });
       if (order && products && products.length) {
         for (let i = 0; i < products.length; i++) {
           const { id, quantity } = products[i];
