@@ -107,7 +107,7 @@ const ShowOrder = () => {
         <Descriptions.Item label="Договор заключается в лице">
           {order.contractPerson}
         </Descriptions.Item>
-        <Descriptions.Item label="Договор действует на основе">
+        <Descriptions.Item label="Договор действует на основании">
           {order.contractAuthority}
         </Descriptions.Item>
         <Descriptions.Item label="Источник финансирования">
