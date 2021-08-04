@@ -37,13 +37,13 @@ const ContractInfoFields = ({ form }) => {
   >
     <Form.Item
       name={["contractInfo", "contractPerson"]}
-      label="В лице кого будет заключаться договор"
+      label="Лицо заключающее договор"
     >
       <Input/>
     </Form.Item>
     <Form.Item
       name={["contractInfo", "contractAuthority"]}
-      label="На основании чего действует договор"
+      label="Действует на основании"
     >
       <Input/>
     </Form.Item>
