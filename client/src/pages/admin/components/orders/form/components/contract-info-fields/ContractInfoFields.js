@@ -37,7 +37,7 @@ const ContractInfoFields = ({ form }) => {
   >
     <Form.Item
       name={["contractInfo", "contractPerson"]}
-      label="Лицо заключающее договор"
+      label="В лице кого заключается договор (должность, ФИО)"
     >
       <Input/>
     </Form.Item>
